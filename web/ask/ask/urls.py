@@ -19,6 +19,7 @@ from ask import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', views.return_ok),
     url(r'^login/', views.return_ok, name='ok'),
     url(r'^signup/', views.return_ok, name='ok'),
     url(r'^question/', include('qa.urls')),
