@@ -5,7 +5,7 @@ eval $nginx
 sudo rm -rf /etc/nginx/sites-enabled/default
 sudo /etc/init.d/nginx restart
 cd /home/box/web
-gunicorn hello:app --bind 0.0.0.0:8080 &
+gunicorn hello:wsgi_app --bind 0.0.0.0:8080 &
 cd ask
 gunicorn ask.wsgi:application --bind 0.0.0.0:8000 &
 #sudo ln -s /home/box/web/etc/gunicorn.conf   /etc/gunicorn.d/test
