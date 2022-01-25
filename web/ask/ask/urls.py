@@ -16,14 +16,13 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from ask import views
+import os
+import django
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "UserAdmin.settings")
+django.setup()
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^$', views.return_ok),
-    url(r'^login/', views.return_ok, name='ok'),
-    url(r'^signup/', views.return_ok, name='ok'),
-    url(r'^question/', include('qa.urls')),
-    url(r'^ask/', views.return_ok, name='ok'),
-    url(r'^popular/', views.return_ok, name='ok'),
-    url(r'^new/', views.return_ok, name='ok'),
-]
+               url(r'^admin/', admin.site.urls),
+               url(r'^', include('qa.urls')),
+              ]
