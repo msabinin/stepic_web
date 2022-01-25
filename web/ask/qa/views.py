@@ -21,7 +21,20 @@ def new_posts(request):
     paginator = Paginator(posts, limit)
     paginator.baseurl = '/?page='
     page = paginator.page(page)
+    print(posts.values_list(), paginator.baseurl)
     return render(request,  'qa/new_posts.html', {
-        posts: page.object_list,
-        paginator: paginator,  page: page,
+        'posts': page.object_list,
+        'paginator': paginator,  page: page,
+        })
+
+def popular_posts(request):
+    posts = Question.objects.popular()
+    limit = request.GET.get('limit', 10)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(posts, limit)
+    paginator.baseurl = '/popular/?page='
+    page = paginator.page(page)
+    print(posts.values_list(), paginator.baseurl)
+    return render(request,  'qa/new_posts.html', {
+        'posts': page.object_list,                                                                                              'paginator': paginator,  page: page,
         })

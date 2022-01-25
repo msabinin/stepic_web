@@ -1,2 +1,3 @@
-__pycache__
+web/ask/static/admin/
+web/__pycache__/
 *.pyc
