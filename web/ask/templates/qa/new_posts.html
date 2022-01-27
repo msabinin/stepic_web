@@ -1,3 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<ul>
+{% for link in posts %}
+ <li>
+ <a href="/question/{{ link.id }}">{{ link.title }}</a>
+ </li> 
+{% endfor %}
+</ul>
 <nav><ul class="pagination">
 {% for p in paginator.page_range %}
  {% if p == page.number %}
@@ -10,3 +19,4 @@
 </li>
 {% endfor %}
 </ul></nav>
+{% endblock %}
