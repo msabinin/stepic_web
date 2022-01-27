@@ -9,5 +9,5 @@ urlpatterns = [
                url(r'^ask/', return_ok, name='ok'),
                url(r'^popular/', views.popular_posts, name='popular'),
                url(r'^new/', return_ok, name='ok'),
-               url(r'^question/(?P<pk>\d+)/', views.test, name='test'),
+               url(r'^question/(?P<pk>\d+)/', views.post_details, name='details'),
               ]

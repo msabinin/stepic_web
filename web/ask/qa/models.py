@@ -16,8 +16,9 @@ class Question(models.Model):
     rating = models.IntegerField(default=0)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     likes = models.ManyToManyField(User, related_name='question_like_user')
-    objects = QuestionManager()
-
+    c_objects = QuestionManager()
+    objects = models.Manager()
+ 
     def get_url(self):
         return reverse('ask:post-details',
                         kwargs={'slug': self.title})
@@ -30,3 +31,7 @@ class Answer(models.Model):
     added_at = models.DateTimeField(blank=True, auto_now_add=True)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    objects = models.Manager()
+    
+    def __unicode__(self):
+        return self.text
