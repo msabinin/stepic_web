@@ -20,8 +20,7 @@ class Question(models.Model):
     objects = models.Manager()
  
     def get_url(self):
-        return reverse('ask:post-details',
-                        kwargs={'slug': self.title})
+        return '/question/{}/'.format(self.id)
 
     def __unicode__(self):
         return self.title 

@@ -13,4 +13,9 @@
  </li>
  {% endfor %}
 </ul></p>
+<form method="post">
+{% csrf_token %}
+ {{ form.as_p }}
+        <button type="submit">Ответить</button>
+    </form>
 {% endblock %}
