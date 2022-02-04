@@ -1,11 +1,13 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, render_to_response, get_object_or_404, redirect
 from django.views.decorators.http import require_GET
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.template import RequestContext
 from qa.models import Question, QuestionManager, Answer
-from qa.forms import AskForm, AnswerForm
+from qa.forms import *
 
 def test(request, *args, **kwargs):
     return HttpResponse('OK')
@@ -35,6 +37,7 @@ def extract_data(request, data_sort_type):
               }
     return context
 
+@login_required(login_url='/login/')
 def post_details(request, pk):
     post = get_object_or_404(Question.objects.filter(id=pk))
     answers = post.answer_set.all()
@@ -64,6 +67,7 @@ def popular_posts(request):
     context = extract_data(request, 'rating')
     return render(request, 'qa/new_posts.html', context)
 
+@login_required(login_url='/login/')
 def ask(request):
     if request.method == "POST":
         form = AskForm(request.POST)
@@ -80,26 +84,24 @@ def ask(request):
                      'session': request.session, 
                    })
 
-def login(request):
-    if request.method == "POST":
-        post = loginForm(request.POST)
+def userLogin(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
         if form.is_valid():
-            username = post['username']
-            password = post['password']
-            user = authenticate(username=username, password=password)
-        if user is not None:
-            login(request, user)
-            url = '/'
-            return HttpResponseRedirect(url)
-        else:
-            url = '/signup/'
-            return HttpResponseRedirect(url)
-    else:
-        post = loginForm()
-    return render(request, 'qa/login.html',
-                  {'post': post,
-                   'username': username,
-                   'password': password,
-                   'form': form,
-                  })
+            user = form.save()
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect('/')
+    form = LoginForm()
+    return render(request, 'qa/login.html', {'form': form})
 
+def userSignUp(request):
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect('/')
+    form = SignupForm()
+    return render(request, 'qa/signup.html', {'form': form})

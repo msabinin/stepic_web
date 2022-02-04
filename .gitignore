@@ -1,3 +1,4 @@
 web/ask/static/admin/
+web/ask/qa/migrations/
 web/__pycache__/
 *.pyc
