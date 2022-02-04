@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_GET
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
+from django.contrib.auth import authenticate, login
 from qa.models import Question, QuestionManager, Answer
 from qa.forms import AskForm, AnswerForm
 
@@ -75,6 +76,30 @@ def ask(request):
         form = AskForm()
     return render(request, 'qa/post_add.html', 
                    {'form': form,
-                    '#user': request.user,
-                     #'session': request.session, 
+                    'user': request.user,
+                     'session': request.session, 
                    })
+
+def login(request):
+    if request.method == "POST":
+        post = loginForm(request.POST)
+        if form.is_valid():
+            username = post['username']
+            password = post['password']
+            user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            url = '/'
+            return HttpResponseRedirect(url)
+        else:
+            url = '/signup/'
+            return HttpResponseRedirect(url)
+    else:
+        post = loginForm()
+    return render(request, 'qa/login.html',
+                  {'post': post,
+                   'username': username,
+                   'password': password,
+                   'form': form,
+                  })
+

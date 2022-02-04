@@ -5,14 +5,15 @@ from django.contrib.auth.models import User
 class AskForm(forms.Form):
     title = forms.CharField(max_length=100)
     text = forms.CharField(widget=forms.Textarea)
+    
 
     def clean(self):
         pass
 
     def save(self):
         question = Question(**self.cleaned_data)
-        #question.author_id = self._user.id
-        question.author_id = '1'
+        question.author_id = self._user.id
+        #question.author_id = '1'
         question.save()
         return question
 
@@ -34,8 +35,8 @@ class AnswerForm(forms.Form):
 
     def save(self):
         answer = Answer(**self.cleaned_data)
-        #answer.author_id = self._user.id
-        answer.author_id = '1'
+        answer.author_id = self._user.id
+        #answer.author_id = '1'
         answer.save()
         return answer
 
